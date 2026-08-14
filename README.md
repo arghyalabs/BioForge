@@ -3,7 +3,7 @@
 ## Project Overview
 
 **Project Name**: BioForge  
-**Language Name**: BioLang  
+**Language Name**: BioForge  
 
 ## Mission Statement
 
@@ -14,13 +14,13 @@
 ## What This Is NOT
 
 * **Not just a molecular viewer**: While visualization is critical, BioForge is primarily a platform for *simulating* and *measuring* biological systems, not just looking at static structures.
-* **Not a Python wrapper**: BioLang is a completely novel, natively compiled language specifically designed for the unique abstractions of biology, rather than an API bolted onto an existing general-purpose language.
+* **Not a Python wrapper**: BioForge is a completely novel, natively compiled language specifically designed for the unique abstractions of biology, rather than an API bolted onto an existing general-purpose language.
 * **Not a game engine**: Scientific correctness, physical validity, and accurate measurements are always prioritized over visual beauty or real-time frame rates.
-* **Not a general-purpose language**: You won't use BioLang to write a web server. It is focused entirely on biological modeling.
+* **Not a general-purpose language**: You won't use BioForge to write a web server. It is focused entirely on biological modeling.
 
 ## The Two-Level Vision
 
-1. **Immediate Vision (The First Vertical Slice)**: A complete pipeline from parsing BioLang code to simulating a protein-ligand interaction in an environment, performing measurements, and rendering the trajectory in 3D/4D. (BioLang → Parser → BioIR → Biological Structure → SimulationState → Physics → Measurements → Trajectory → 3D/4D Renderer)
+1. **Immediate Vision (The First Vertical Slice)**: A complete pipeline from parsing BioForge code to simulating a protein-ligand interaction in an environment, performing measurements, and rendering the trajectory in 3D/4D. (BioForge → Parser → BioIR → Biological Structure → SimulationState → Physics → Measurements → Trajectory → 3D/4D Renderer)
 2. **Long-Term Vision**: A truly programmable biological world spanning from atomic scales to full organismic scales.
 
 ## Core Philosophy
@@ -75,9 +75,9 @@ The fundamental pipeline of BioForge follows a strict scientific methodology:
                       BioStudio IDE
 ```
 
-## Example BioLang Code
+## Example BioForge Code
 
-BioLang provides domain-specific primitives for experiments, structures, environments, and measurements:
+BioForge provides domain-specific primitives for experiments, structures, environments, and measurements:
 
 ```bio
 experiment HelloBiology {
@@ -108,7 +108,7 @@ experiment HelloBiology {
 
 ## Quick Start
 
-To build the compiler and parse a BioLang file:
+To build the compiler and parse a BioForge file:
 
 ```bash
 # Clone the repository
@@ -136,7 +136,7 @@ BioForge/
 │   ├── bioforge_parser/  # Syntactic analysis (tokens to AST)
 │   ├── bioforge_ast/     # Abstract Syntax Tree definitions
 │   └── bioforge_diagnostics/ # Error reporting and source mapping
-├── examples/             # Example BioLang scripts
+├── examples/             # Example BioForge scripts
 └── docs/                 # Additional project documentation
 ```
 

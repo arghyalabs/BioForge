@@ -4,7 +4,7 @@ This document outlines the comprehensive development roadmap for the BioForge pr
 
 ## 1. Current Status
 **Phase 0 + Phase 1 (Architecture + Language Core) — Active**
-We are currently establishing the foundational architecture, repository structure, and the core compiler components for BioLang.
+We are currently establishing the foundational architecture, repository structure, and the core compiler components for BioForge.
 
 ## 2. Phase Table
 

@@ -1,5 +1,5 @@
 // BioForge - Simple Atom
-// Minimal BioLang example
+// Minimal BioForge example
 
 experiment SimpleAtom {
     atom hydrogen = atom("H")

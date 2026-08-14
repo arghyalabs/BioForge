@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-BioForge is uniquely positioned as both a **programming language (BioLang)** and a **scientific computing platform**. The architecture must support the parsing, semantic analysis, and execution of biological domain logic, while simultaneously providing a robust, highly performant engine for numerical simulation and multiscale physics.
+BioForge is uniquely positioned as both a **programming language (BioForge)** and a **scientific computing platform**. The architecture must support the parsing, semantic analysis, and execution of biological domain logic, while simultaneously providing a robust, highly performant engine for numerical simulation and multiscale physics.
 
 This document details the architectural principles and design decisions driving the BioForge project.
 
@@ -132,11 +132,11 @@ Reproducibility is paramount. BioForge captures the full experiment state—the 
 
 ## 12. BioStudio Vision
 
-While the core is a CLI and runtime, the ultimate vision is **BioStudio**: a tightly integrated IDE. It will combine a code editor for BioLang, a 3D/4D viewport for visualizing the multiscale world, an interactive timeline (scrubbing through simulation history), live measurement graphs, and scientific logs, all synchronized in real-time.
+While the core is a CLI and runtime, the ultimate vision is **BioStudio**: a tightly integrated IDE. It will combine a code editor for BioForge, a 3D/4D viewport for visualizing the multiscale world, an interactive timeline (scrubbing through simulation history), live measurement graphs, and scientific logs, all synchronized in real-time.
 
 ## 13. Future: BioIR
 
-The Biological Intermediate Representation (BioIR) will be a critical layer. It decouples the BioLang syntax from the backend physics engines. BioIR represents a graph of biological entities, their states, and their interactions, allowing optimizations and transformations before the execution plan is handed to the specific numerical solvers.
+The Biological Intermediate Representation (BioIR) will be a critical layer. It decouples the BioForge syntax from the backend physics engines. BioIR represents a graph of biological entities, their states, and their interactions, allowing optimizations and transformations before the execution plan is handed to the specific numerical solvers.
 
 ## 14. Future: Unit System
 

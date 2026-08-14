@@ -1,6 +1,6 @@
 //! # BioForge Lexer
 //!
-//! Tokenizer for the BioLang language, built on top of [`logos`].
+//! Tokenizer for the BioForge language, built on top of [`logos`].
 //!
 //! ## Design Decision: Unit Tokens
 //!
@@ -11,7 +11,7 @@
 use bioforge_diagnostics::{Diagnostic, Span};
 use logos::Logos;
 
-/// All tokens in BioLang v0.1.
+/// All tokens in BioForge v0.1.
 #[derive(Logos, Debug, Clone, PartialEq)]
 #[logos(skip r"[ \t\r\n\f]+")]
 #[logos(skip r"//[^\n]*")]
@@ -149,7 +149,7 @@ impl Token {
     }
 }
 
-/// Tokenizer for BioLang source code.
+/// Tokenizer for BioForge source code.
 pub struct Lexer<'a> {
     source: &'a str,
 }

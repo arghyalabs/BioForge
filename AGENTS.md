@@ -3,11 +3,11 @@
 Welcome to the BioForge project. This document is **mandatory reading** for any AI agent working on this codebase.
 
 ## 1. Project Purpose
-BioForge is a biology-native programming language (BioLang) and multiscale biological simulation platform. The deeper mission of BioForge is to make biology computationally programmable, bridging the gap between biological description and computational simulation.
+BioForge is a biology-native programming language (BioForge) and multiscale biological simulation platform. The deeper mission of BioForge is to make biology computationally programmable, bridging the gap between biological description and computational simulation.
 
 ## 2. Architecture Overview
 BioForge consists of a compiler pipeline and a decoupled simulation/rendering engine. The general flow is:
-**BioLang → Parser → BioIR → Biological Structure → SimulationState → Physics → Measurements → Trajectory → 3D/4D Renderer**
+**BioForge → Parser → BioIR → Biological Structure → SimulationState → Physics → Measurements → Trajectory → 3D/4D Renderer**
 
 The project is structured into multiple crates (modules) ensuring strict boundaries and unidirectionality. The first vertical slice connects the source code all the way through to a 3D/4D rendered trajectory.
 

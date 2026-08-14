@@ -2,7 +2,7 @@
 name = "bioforge_ast"
 version.workspace = true
 edition.workspace = true
-description = "Abstract Syntax Tree definitions for the BioLang language"
+description = "Abstract Syntax Tree definitions for the BioForge language"
 
 [dependencies]
 bioforge_diagnostics.workspace = true

@@ -2,7 +2,7 @@
 name = "bioforge_lexer"
 version.workspace = true
 edition.workspace = true
-description = "Lexer/tokenizer for the BioLang language"
+description = "Lexer/tokenizer for the BioForge language"
 
 [dependencies]
 bioforge_diagnostics.workspace = true

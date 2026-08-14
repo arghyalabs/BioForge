@@ -1,5 +1,5 @@
 // BioForge - Hello Biology
-// First BioLang program: Protein-Ligand Binding Experiment
+// First BioForge program: Protein-Ligand Binding Experiment
 
 experiment HelloBiology {
     // Load biological entities

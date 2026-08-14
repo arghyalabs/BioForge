@@ -1,4 +1,4 @@
-//! Tests for the BioLang parser.
+//! Tests for the BioForge parser.
 
 use crate::parse;
 use bioforge_ast::*;

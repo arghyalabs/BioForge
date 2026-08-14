@@ -1,6 +1,6 @@
 //! # BioForge AST
 //!
-//! Abstract Syntax Tree definitions for the BioLang language.
+//! Abstract Syntax Tree definitions for the BioForge language.
 //!
 //! Every AST node carries source location information via [`Spanned<T>`].
 
@@ -9,7 +9,7 @@ use std::fmt;
 
 // ─── Program ───────────────────────────────────────────────────────────────────
 
-/// A complete BioLang program consisting of one or more experiments.
+/// A complete BioForge program consisting of one or more experiments.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Program {
     pub experiments: Vec<Spanned<ExperimentDecl>>,
@@ -61,7 +61,7 @@ pub enum Statement {
 
 // ─── Entity Kind ───────────────────────────────────────────────────────────────
 
-/// Biological entity types supported in BioLang v0.1.
+/// Biological entity types supported in BioForge v0.1.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum EntityKind {
     Protein,
@@ -85,7 +85,7 @@ impl fmt::Display for EntityKind {
 
 // ─── Expressions ───────────────────────────────────────────────────────────────
 
-/// Expressions in BioLang.
+/// Expressions in BioForge.
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expr {
     /// Numeric literal: `310`, `7.4`

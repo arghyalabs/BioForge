@@ -1,10 +1,10 @@
-//! Recursive descent parser implementation for BioLang v0.1.
+//! Recursive descent parser implementation for BioForge v0.1.
 
 use bioforge_ast::*;
 use bioforge_diagnostics::{Diagnostic, Span, Spanned};
 use bioforge_lexer::Token;
 
-/// Known unit identifiers for BioLang v0.1.
+/// Known unit identifiers for BioForge v0.1.
 /// When a number is followed by one of these identifiers, it forms a Quantity.
 const KNOWN_UNITS: &[&str] = &[
     "K", "fs", "ps", "ns", "us", "ms", "s", "nm", "um", "mm", "m", "mM", "M", "uM", "nM", "mV",
@@ -48,7 +48,7 @@ impl Parser {
                 self.diagnostics.push(
                     Diagnostic::error("Expected 'experiment' declaration")
                         .with_label(span, "unexpected token here")
-                        .with_help("A BioLang program consists of one or more 'experiment' blocks"),
+                        .with_help("A BioForge program consists of one or more 'experiment' blocks"),
                 );
                 self.advance();
             }

@@ -1,14 +1,14 @@
-# BioLang Language Specification (v0.1)
+# BioForge Language Specification (v0.1)
 
 ## 1. Language Overview
 
-**BioLang** is a domain-specific programming language engineered specifically for describing biological systems, physical interactions, and scientific experiments. It serves as the primary interface for the BioForge platform.
+**BioForge** is a domain-specific programming language engineered specifically for describing biological systems, physical interactions, and scientific experiments. It serves as the primary interface for the BioForge platform.
 
 ## 2. Design Philosophy
 
 Scientists should express biological systems, not generic computations. 
 
-Traditional languages force scientists to translate their domain knowledge into arrays, loops, and pointers. BioLang flips this paradigm: the language primitives are the biological and physical concepts themselves. You declare what the system *is* and how it *behaves*, while the compiler maps this to the optimal mathematical solvers and data structures.
+Traditional languages force scientists to translate their domain knowledge into arrays, loops, and pointers. BioForge flips this paradigm: the language primitives are the biological and physical concepts themselves. You declare what the system *is* and how it *behaves*, while the compiler maps this to the optimal mathematical solvers and data structures.
 
 ---
 
@@ -141,7 +141,7 @@ experiment SingleIonDynamics {
 
 ## 7. Future Language Primitives (Not in v0.1)
 
-To fully capture biological complexity, future iterations of BioLang will introduce:
+To fully capture biological complexity, future iterations of BioForge will introduce:
 ```
 hypothesis, mechanism, prediction, perturbation,
 observable, comparison, reaction, interaction,
@@ -153,7 +153,7 @@ constraint, scale, counterfactual
 
 ## 8. Fundamental Language Primitives (Long-Term Vision)
 
-The ultimate architecture of BioLang will treat the following concepts as foundational types and blocks:
+The ultimate architecture of BioForge will treat the following concepts as foundational types and blocks:
 `ENTITY`, `STRUCTURE`, `STATE`, `FIELD`, `FORCE`, `INTERACTION`, `REACTION`, `CONSTRAINT`, `ENVIRONMENT`, `MECHANISM`, `SCALE`, `TIME`, `EXPERIMENT`, `OBSERVABLE`, `MEASUREMENT`, `HYPOTHESIS`, `PREDICTION`
 
 ---
@@ -161,14 +161,14 @@ The ultimate architecture of BioLang will treat the following concepts as founda
 ## 9. Native Unit System (Future Phase 2)
 
 A core feature planned for Phase 2 is the `Quantity` struct, which guarantees dimensional correctness.
-Every physical value in BioLang will be internally represented as a `Quantity { value, unit, dimension }`. 
+Every physical value in BioForge will be internally represented as a `Quantity { value, unit, dimension }`. 
 The compiler will track dimensions (e.g., `[Mass] * [Length]^2 / [Time]^2` for Energy) and reject mathematically invalid operations at compile-time.
 
 ---
 
 ## 10. Biological Type System (Future)
 
-BioLang will feature a strictly typed hierarchy representing biological reality:
+BioForge will feature a strictly typed hierarchy representing biological reality:
 * `Atom` (Base particle with mass, charge, element)
 * `Bond` (Interaction constraint between Atoms)
 * `Molecule` (Graph of Atoms and Bonds)

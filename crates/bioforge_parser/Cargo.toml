@@ -2,7 +2,7 @@
 name = "bioforge_parser"
 version.workspace = true
 edition.workspace = true
-description = "Parser for the BioLang language"
+description = "Parser for the BioForge language"
 
 [dependencies]
 bioforge_diagnostics.workspace = true

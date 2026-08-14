@@ -1,6 +1,6 @@
 //! # BioForge Parser
 //!
-//! Hand-written recursive descent parser for the BioLang language.
+//! Hand-written recursive descent parser for the BioForge language.
 //!
 //! Converts a stream of tokens from [`bioforge_lexer`] into an AST
 //! defined in [`bioforge_ast`].
@@ -14,7 +14,7 @@ use bioforge_ast::Program;
 use bioforge_diagnostics::Diagnostic;
 use bioforge_lexer::Lexer;
 
-/// Parse BioLang source code into a [`Program`] AST.
+/// Parse BioForge source code into a [`Program`] AST.
 ///
 /// Returns the (possibly partial) AST along with any diagnostics.
 /// On syntax errors, the parser attempts error recovery to report

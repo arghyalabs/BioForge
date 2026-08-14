@@ -21,7 +21,7 @@ use std::process;
 #[command(
     long_about = "BioForge is a biology-native programming language and multiscale biological \
     simulation platform.\n\n\
-    The BioLang language allows scientists to describe biological systems and mechanisms \
+    The BioForge language allows scientists to describe biological systems and mechanisms \
     in a computationally executable way.\n\n\
     Mission: Make biology computationally programmable."
 )]
@@ -32,17 +32,17 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Parse a BioLang source file and display the AST
+    /// Parse a BioForge source file and display the AST
     Parse {
         /// Path to the .bio source file
         file: String,
     },
-    /// Check a BioLang source file for errors without displaying the AST
+    /// Check a BioForge source file for errors without displaying the AST
     Check {
         /// Path to the .bio source file
         file: String,
     },
-    /// Run a BioLang program (simulation runtime not yet implemented)
+    /// Run a BioForge program (simulation runtime not yet implemented)
     Run {
         /// Path to the .bio source file
         file: String,
