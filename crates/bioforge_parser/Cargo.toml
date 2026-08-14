@@ -1,0 +1,16 @@
+[package]
+name = "bioforge_parser"
+version.workspace = true
+edition.workspace = true
+description = "Parser for the BioLang language"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_ast.workspace = true
+bioforge_lexer.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true

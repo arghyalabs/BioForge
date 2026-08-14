@@ -1,0 +1,19 @@
+[package]
+name = "bioforge_ast"
+version.workspace = true
+edition.workspace = true
+description = "Abstract Syntax Tree definitions for the BioLang language"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+serde = { workspace = true, optional = true }
+
+[features]
+default = []
+serialize = ["serde"]
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true

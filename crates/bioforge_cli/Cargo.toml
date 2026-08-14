@@ -1,0 +1,19 @@
+[package]
+name = "bioforge_cli"
+version.workspace = true
+edition.workspace = true
+description = "Command-line interface for the BioForge compiler"
+
+[[bin]]
+name = "bio"
+path = "src/main.rs"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_ast.workspace = true
+bioforge_lexer.workspace = true
+bioforge_parser.workspace = true
+clap.workspace = true
+
+[lints]
+workspace = true

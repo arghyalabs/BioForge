@@ -1,0 +1,15 @@
+[package]
+name = "bioforge_lexer"
+version.workspace = true
+edition.workspace = true
+description = "Lexer/tokenizer for the BioLang language"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+logos.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,21 @@
+# Build artifacts
+/target/
+**/target/
+
+# Dependencies
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Snapshots (managed by insta)
+# Keep snapshots in version control but ignore pending
+**/*.snap.new

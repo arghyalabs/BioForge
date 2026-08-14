@@ -1,0 +1,11 @@
+---
+source: crates/bioforge_parser/src/tests.rs
+assertion_line: 267
+expression: program.pretty_print()
+---
+experiment SimpleAtom {
+  atom hydrogen = atom("H")
+  environment {
+    temperature = 300 K
+  }
+}

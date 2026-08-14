@@ -1,0 +1,15 @@
+[package]
+name = "bioforge_diagnostics"
+version.workspace = true
+edition.workspace = true
+description = "Diagnostic types and error reporting for the BioForge compiler"
+
+[dependencies]
+ariadne.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true

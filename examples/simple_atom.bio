@@ -1,0 +1,10 @@
+// BioForge - Simple Atom
+// Minimal BioLang example
+
+experiment SimpleAtom {
+    atom hydrogen = atom("H")
+
+    environment {
+        temperature = 300 K
+    }
+}

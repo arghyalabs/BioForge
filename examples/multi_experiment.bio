@@ -1,0 +1,40 @@
+// BioForge - Multiple Experiments
+// Demonstrates multiple experiments in one file
+
+experiment Binding {
+    protein receptor = load_structure("receptor.pdb")
+    ligand inhibitor = load("inhibitor.sdf")
+
+    environment {
+        temperature = 310 K
+        pH = 7.4
+    }
+
+    simulate {
+        timestep = 2 fs
+        duration = 100 ps
+    }
+
+    measure {
+        distance(receptor, inhibitor)
+        energy(receptor, inhibitor)
+    }
+}
+
+experiment Solvation {
+    molecule water = load("water.sdf")
+    ion sodium = ion("Na+")
+
+    environment {
+        temperature = 298 K
+    }
+
+    simulate {
+        timestep = 1 fs
+        duration = 5 ps
+    }
+
+    measure {
+        distance(water, sodium)
+    }
+}

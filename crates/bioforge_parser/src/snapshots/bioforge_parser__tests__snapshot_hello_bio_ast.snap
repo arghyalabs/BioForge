@@ -1,0 +1,25 @@
+---
+source: crates/bioforge_parser/src/tests.rs
+assertion_line: 255
+expression: program.pretty_print()
+---
+experiment HelloBiology {
+  protein receptor = load_structure("protein.pdb")
+  ligand drug = load("drug.sdf")
+  environment {
+    temperature = 310 K
+    pH = 7.4
+  }
+  simulate {
+    timestep = 1 fs
+    duration = 10 ps
+  }
+  measure {
+    distance(receptor, drug)
+    energy(receptor, drug)
+  }
+  visualize {
+    receptor
+    drug
+  }
+}

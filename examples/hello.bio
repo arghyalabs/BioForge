@@ -1,0 +1,32 @@
+// BioForge - Hello Biology
+// First BioLang program: Protein-Ligand Binding Experiment
+
+experiment HelloBiology {
+    // Load biological entities
+    protein receptor = load_structure("protein.pdb")
+    ligand drug = load("drug.sdf")
+
+    // Define the physical environment
+    environment {
+        temperature = 310 K
+        pH = 7.4
+    }
+
+    // Configure simulation parameters
+    simulate {
+        timestep = 1 fs
+        duration = 10 ps
+    }
+
+    // Define measurements to record
+    measure {
+        distance(receptor, drug)
+        energy(receptor, drug)
+    }
+
+    // Specify visualization targets
+    visualize {
+        receptor
+        drug
+    }
+}
