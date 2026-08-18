@@ -3,22 +3,16 @@
 use bioforge_ast::*;
 use bioforge_diagnostics::{Diagnostic, Span, Spanned};
 use bioforge_lexer::Token;
-
-/// Known unit identifiers for BioForge v0.1.
-/// When a number is followed by one of these identifiers, it forms a Quantity.
-const KNOWN_UNITS: &[&str] = &[
-    "K", "fs", "ps", "ns", "us", "ms", "s", "nm", "um", "mm", "m", "mM", "M", "uM", "nM", "mV",
-    "V", "atm", "Pa", "kPa", "MPa", "mol", "Da", "kDa", "Hz",
-];
-
-fn is_known_unit(name: &str) -> bool {
-    KNOWN_UNITS.contains(&name)
-}
+use bioforge_types::UnitRegistry;
 
 pub(crate) struct Parser {
     tokens: Vec<(Token, Span)>,
     pos: usize,
     diagnostics: Vec<Diagnostic>,
+    /// Unit registry — single source of truth for unit recognition.
+    /// Used by `try_parse_unit` to determine whether an identifier
+    /// following a number is a unit (forming a Quantity) or a regular identifier.
+    unit_registry: UnitRegistry,
 }
 
 impl Parser {
@@ -27,6 +21,7 @@ impl Parser {
             tokens,
             pos: 0,
             diagnostics: Vec::new(),
+            unit_registry: UnitRegistry::new(),
         }
     }
 
@@ -379,7 +374,7 @@ impl Parser {
     /// Try to consume a unit identifier following a number.
     fn try_parse_unit(&mut self) -> Option<Spanned<String>> {
         if let Some(Token::Identifier(name)) = self.peek() {
-            if is_known_unit(name) {
+            if self.unit_registry.is_known(name) {
                 let name = name.clone();
                 let (_, span) = self.advance().unwrap();
                 return Some(Spanned::new(name, span));

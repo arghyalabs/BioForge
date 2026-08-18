@@ -1,14 +1,12 @@
 [package]
-name = "bioforge_parser"
+name = "bioforge_types"
 version.workspace = true
 edition.workspace = true
-description = "Parser for the BioForge language"
+description = "Physical dimensions, units, and quantities for the BioForge language"
 
 [dependencies]
 bioforge_diagnostics.workspace = true
-bioforge_ast.workspace = true
-bioforge_lexer.workspace = true
-bioforge_types.workspace = true
+thiserror.workspace = true
 
 [dev-dependencies]
 insta.workspace = true

@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "crates/bioforge_diagnostics",
+    "crates/bioforge_types",
     "crates/bioforge_ast",
     "crates/bioforge_lexer",
     "crates/bioforge_parser",
@@ -20,6 +21,7 @@ description = "A biology-native programming language and multiscale biological s
 [workspace.dependencies]
 # Internal crates
 bioforge_diagnostics = { path = "crates/bioforge_diagnostics" }
+bioforge_types = { path = "crates/bioforge_types" }
 bioforge_ast = { path = "crates/bioforge_ast" }
 bioforge_lexer = { path = "crates/bioforge_lexer" }
 bioforge_parser = { path = "crates/bioforge_parser" }
