@@ -1,0 +1,20 @@
+// This file has intentional semantic errors for testing.
+// Use `bio check examples/errors.bio` to see diagnostics.
+
+experiment ErrorTest {
+    // Entity declaration
+    protein receptor = load_structure("protein.pdb")
+
+    environment {
+        // ERROR: temperature should be Temperature dimension, not Length
+        temperature = 310 nm
+
+        // ERROR: pH is out of valid range (0-14)
+        pH = 15.0
+    }
+
+    // ERROR: referencing entity "nonexistent" that was never declared
+    visualize {
+        nonexistent
+    }
+}

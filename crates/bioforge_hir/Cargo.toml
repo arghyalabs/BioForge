@@ -1,0 +1,17 @@
+[package]
+name = "bioforge_hir"
+version.workspace = true
+edition.workspace = true
+description = "High-level Intermediate Representation and semantic analysis for BioForge"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_ast.workspace = true
+bioforge_types.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true

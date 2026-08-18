@@ -111,7 +111,7 @@ fn cmd_parse(path: &str) -> i32 {
     }
 }
 
-/// Check command: parse the file and report errors without showing AST.
+/// Check command: parse the file, run semantic analysis, and report errors.
 fn cmd_check(path: &str) -> i32 {
     let source = match read_source(path) {
         Ok(s) => s,
@@ -124,38 +124,63 @@ fn cmd_check(path: &str) -> i32 {
         bioforge_diagnostics::render_diagnostics(path, &source, &diagnostics);
     }
 
-    let error_count = diagnostics
+    let parse_errors = diagnostics
         .iter()
         .filter(|d| d.severity == bioforge_diagnostics::DiagnosticSeverity::Error)
         .count();
+
+    if parse_errors > 0 {
+        eprintln!(
+            "Check failed: {} parse error(s). Fix syntax errors first.",
+            parse_errors
+        );
+        return 1;
+    }
+
+    // Phase 3: Semantic analysis — lower AST to HIR
+    let (_hir, semantic_errors) = bioforge_hir::lower(&program);
+
+    if !semantic_errors.is_empty() {
+        // Convert semantic errors to diagnostics for ariadne rendering
+        let sem_diagnostics: Vec<bioforge_diagnostics::Diagnostic> = semantic_errors
+            .iter()
+            .map(|e| {
+                bioforge_diagnostics::Diagnostic::error(e.to_string())
+                    .with_label(e.span(), e.to_string())
+            })
+            .collect();
+
+        bioforge_diagnostics::render_diagnostics(path, &source, &sem_diagnostics);
+
+        eprintln!(
+            "Check failed: {} semantic error(s) in {} experiment(s).",
+            semantic_errors.len(),
+            program.experiments.len()
+        );
+        return 1;
+    }
+
+    let exp_count = program.experiments.len();
     let warning_count = diagnostics
         .iter()
         .filter(|d| d.severity == bioforge_diagnostics::DiagnosticSeverity::Warning)
         .count();
-    let exp_count = program.experiments.len();
 
-    if error_count > 0 {
-        eprintln!(
-            "Check failed: {} error(s), {} warning(s) in {} experiment(s).",
-            error_count, warning_count, exp_count
-        );
-        1
-    } else if warning_count > 0 {
+    if warning_count > 0 {
         eprintln!(
             "Check passed with {} warning(s) in {} experiment(s).",
             warning_count, exp_count
         );
-        0
     } else {
         eprintln!(
-            "Check passed: {} experiment(s), no errors.",
+            "Check passed: {} experiment(s), no errors. (syntax ✓, semantics ✓, units ✓)",
             exp_count
         );
-        0
     }
+    0
 }
 
-/// Run command: parse first, then explain that simulation is not yet available.
+/// Run command: parse, validate semantics, then explain that simulation is not yet available.
 fn cmd_run(path: &str) -> i32 {
     let source = match read_source(path) {
         Ok(s) => s,
@@ -169,21 +194,42 @@ fn cmd_run(path: &str) -> i32 {
         bioforge_diagnostics::render_diagnostics(path, &source, &diagnostics);
     }
 
-    let error_count = diagnostics
+    let parse_errors = diagnostics
         .iter()
         .filter(|d| d.severity == bioforge_diagnostics::DiagnosticSeverity::Error)
         .count();
 
-    if error_count > 0 {
+    if parse_errors > 0 {
         eprintln!(
-            "Cannot run: {} parse error(s) found. Fix syntax errors first.",
-            error_count
+            "Cannot run: {} parse error(s). Fix syntax errors first.",
+            parse_errors
         );
         return 1;
     }
 
-    let exp_count = program.experiments.len();
-    eprintln!("Parsed {} experiment(s) successfully.", exp_count);
+    // Phase 3: Semantic analysis
+    let (hir, semantic_errors) = bioforge_hir::lower(&program);
+
+    if !semantic_errors.is_empty() {
+        let sem_diagnostics: Vec<bioforge_diagnostics::Diagnostic> = semantic_errors
+            .iter()
+            .map(|e| {
+                bioforge_diagnostics::Diagnostic::error(e.to_string())
+                    .with_label(e.span(), e.to_string())
+            })
+            .collect();
+
+        bioforge_diagnostics::render_diagnostics(path, &source, &sem_diagnostics);
+
+        eprintln!(
+            "Cannot run: {} semantic error(s). Fix validation errors first.",
+            semantic_errors.len()
+        );
+        return 1;
+    }
+
+    let exp_count = hir.experiments.len();
+    eprintln!("Validated {} experiment(s) successfully. (syntax ✓, semantics ✓, units ✓)", exp_count);
     eprintln!();
     eprintln!("╔══════════════════════════════════════════════════════════════╗");
     eprintln!("║  Simulation runtime is not yet implemented.                 ║");
@@ -196,8 +242,8 @@ fn cmd_run(path: &str) -> i32 {
     eprintln!("║    • Measurement recording                                  ║");
     eprintln!("║    • 3D/4D visualization                                    ║");
     eprintln!("║                                                             ║");
-    eprintln!("║  Current status: Phase 1 (Language Core) ✓                  ║");
-    eprintln!("║  Next milestone: Phase 2 (Unit & Type System)               ║");
+    eprintln!("║  Current status: Phase 3 (BioIR / Semantic Analysis) ✓      ║");
+    eprintln!("║  Next milestone: Phase 4 (Biological Structure Model)       ║");
     eprintln!("╚══════════════════════════════════════════════════════════════╝");
     0
 }

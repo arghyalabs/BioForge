@@ -5,6 +5,7 @@ members = [
     "crates/bioforge_ast",
     "crates/bioforge_lexer",
     "crates/bioforge_parser",
+    "crates/bioforge_hir",
     "crates/bioforge_cli",
 ]
 default-members = ["crates/bioforge_cli"]
@@ -25,6 +26,7 @@ bioforge_types = { path = "crates/bioforge_types" }
 bioforge_ast = { path = "crates/bioforge_ast" }
 bioforge_lexer = { path = "crates/bioforge_lexer" }
 bioforge_parser = { path = "crates/bioforge_parser" }
+bioforge_hir = { path = "crates/bioforge_hir" }
 
 # Lexing
 logos = "0.14"

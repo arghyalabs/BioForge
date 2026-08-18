@@ -13,6 +13,7 @@ bioforge_diagnostics.workspace = true
 bioforge_ast.workspace = true
 bioforge_lexer.workspace = true
 bioforge_parser.workspace = true
+bioforge_hir.workspace = true
 clap.workspace = true
 
 [lints]
