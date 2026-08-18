@@ -17,6 +17,7 @@ members = [
     "crates/bioforge_tissue",
     "crates/bioforge_multiscale",
     "crates/bioforge_hypothesis",
+    "crates/bioforge_twin",
     "crates/bioforge_cli",
 ]
 default-members = ["crates/bioforge_cli"]
@@ -49,6 +50,7 @@ bioforge_cell = { path = "crates/bioforge_cell" }
 bioforge_tissue = { path = "crates/bioforge_tissue" }
 bioforge_multiscale = { path = "crates/bioforge_multiscale" }
 bioforge_hypothesis = { path = "crates/bioforge_hypothesis" }
+bioforge_twin = { path = "crates/bioforge_twin" }
 
 # Lexing
 logos = "0.14"

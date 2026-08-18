@@ -1,12 +1,8 @@
 [package]
-name = "bioforge_cli"
+name = "bioforge_twin"
 version.workspace = true
 edition.workspace = true
-description = "Command-line interface for the BioForge compiler"
-
-[[bin]]
-name = "bio"
-path = "src/main.rs"
+description = "Interactive biological digital twin engine, multi-fidelity reporting, and programmable world for BioForge"
 
 [dependencies]
 bioforge_diagnostics.workspace = true
@@ -26,8 +22,12 @@ bioforge_cell.workspace = true
 bioforge_tissue.workspace = true
 bioforge_multiscale.workspace = true
 bioforge_hypothesis.workspace = true
-bioforge_twin.workspace = true
-clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
 
 [lints]
 workspace = true
