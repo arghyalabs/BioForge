@@ -1,0 +1,8 @@
+HEADER    AMINO ACID                              01-JAN-00   TINY
+REMARK   1 Minimal alanine dipeptide for BioForge testing
+ATOM      1  N   ALA A   1       1.458   0.000   0.000  1.00  0.00           N
+ATOM      2  CA  ALA A   1       2.009   1.420   0.000  1.00  0.00           C
+ATOM      3  C   ALA A   1       1.562   2.163   1.252  1.00  0.00           C
+ATOM      4  O   ALA A   1       0.735   1.685   2.056  1.00  0.00           O
+ATOM      5  CB  ALA A   1       3.529   1.388   0.000  1.00  0.00           C
+END

@@ -1,0 +1,15 @@
+[package]
+name = "bioforge_biology"
+version.workspace = true
+edition.workspace = true
+description = "Biological structure model for BioForge: atoms, bonds, molecules, and PDB loading"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
