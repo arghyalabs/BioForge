@@ -1,0 +1,19 @@
+[package]
+name = "bioforge_cell"
+version.workspace = true
+edition.workspace = true
+description = "Cellular systems, organelles, Central Dogma, and gene regulatory networks for BioForge"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+bioforge_reaction.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
