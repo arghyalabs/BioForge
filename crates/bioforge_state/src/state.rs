@@ -132,8 +132,8 @@ impl SimulationState {
         let total_atoms: usize = molecules.iter().map(|m| m.atom_count()).sum();
 
         let mut positions = Vec::with_capacity(total_atoms);
-        let mut velocities = vec![[0.0, 0.0, 0.0]; total_atoms];
-        let mut forces = vec![[0.0, 0.0, 0.0]; total_atoms];
+        let velocities = vec![[0.0, 0.0, 0.0]; total_atoms];
+        let forces = vec![[0.0, 0.0, 0.0]; total_atoms];
         let mut masses = Vec::with_capacity(total_atoms);
         let mut charges = Vec::with_capacity(total_atoms);
         let mut elements = Vec::with_capacity(total_atoms);

@@ -1,0 +1,18 @@
+[package]
+name = "bioforge_physics"
+version.workspace = true
+edition.workspace = true
+description = "Numerical solvers, integrators, and molecular force fields for the BioForge simulation engine"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+bioforge_state.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+bioforge_biology.workspace = true
+insta.workspace = true
+
+[lints]
+workspace = true
