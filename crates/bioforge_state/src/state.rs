@@ -48,6 +48,21 @@ pub struct StateBond {
     pub order: BondOrder,
 }
 
+/// Valence angle topology inside the simulation state.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct StateAngle {
+    /// 0-indexed atom index of first atom.
+    pub atom1: usize,
+    /// 0-indexed atom index of central vertex atom.
+    pub atom2: usize,
+    /// 0-indexed atom index of third atom.
+    pub atom3: usize,
+    /// Equilibrium angle $\theta_0$ in radians.
+    pub theta0: f64,
+    /// Harmonic angle bending force constant $k_\theta$ in $(\text{kJ/mol})/\text{rad}^2$.
+    pub k_theta: f64,
+}
+
 /// The complete, instantaneous physical state of a simulated biological system.
 ///
 /// Uses contiguous Structure-of-Arrays (SoA) layout for high cache locality
@@ -76,6 +91,8 @@ pub struct SimulationState {
     pub charges: Vec<f64>,
     /// Chemical element for each atom.
     pub elements: Vec<Element>,
+    /// Van der Waals parameters $[\sigma, \varepsilon]$ in $\text{Å}$ and $\text{kJ/mol}$.
+    pub vdw_params: Vec<[f64; 2]>,
     /// Atom names from the structure (e.g., "CA", "N", "O").
     pub atom_names: Vec<String>,
 
@@ -90,6 +107,8 @@ pub struct SimulationState {
     // --- Topology & Boundary Conditions ---
     /// Bond connectivity with equilibrium parameters.
     pub bonds: Vec<StateBond>,
+    /// Valence angle connectivity with equilibrium parameters.
+    pub angles: Vec<StateAngle>,
     /// Periodic boundary box dimensions $[L_x, L_y, L_z]$ in $\text{Å}$.
     pub box_size: Option<[f64; 3]>,
 }
@@ -108,11 +127,13 @@ impl SimulationState {
             masses: Vec::new(),
             charges: Vec::new(),
             elements: Vec::new(),
+            vdw_params: Vec::new(),
             atom_names: Vec::new(),
             residue_ids: Vec::new(),
             residue_names: Vec::new(),
             chain_ids: Vec::new(),
             bonds: Vec::new(),
+            angles: Vec::new(),
             box_size: None,
         }
     }
@@ -137,6 +158,7 @@ impl SimulationState {
         let mut masses = Vec::with_capacity(total_atoms);
         let mut charges = Vec::with_capacity(total_atoms);
         let mut elements = Vec::with_capacity(total_atoms);
+        let mut vdw_params = Vec::with_capacity(total_atoms);
         let mut atom_names = Vec::with_capacity(total_atoms);
         let mut residue_ids = Vec::with_capacity(total_atoms);
         let mut residue_names = Vec::with_capacity(total_atoms);
@@ -150,6 +172,7 @@ impl SimulationState {
                 masses.push(atom.mass);
                 charges.push(atom.charge);
                 elements.push(atom.element);
+                vdw_params.push(default_vdw_for_element(atom.element));
                 atom_names.push(atom.name.clone());
                 residue_ids.push(atom.residue_id);
                 residue_names.push(atom.residue_name.clone());
@@ -189,6 +212,50 @@ impl SimulationState {
             atom_offset += mol.atom_count();
         }
 
+        // Auto-detect angles from bond connectivity
+        let mut angles = Vec::new();
+        for j in 0..total_atoms {
+            // Find all neighbors bonded to atom j
+            let mut neighbors = Vec::new();
+            for bond in &bonds {
+                if bond.atom1 == j {
+                    neighbors.push(bond.atom2);
+                } else if bond.atom2 == j {
+                    neighbors.push(bond.atom1);
+                }
+            }
+
+            // Generate angle for each pair of neighbors (i, k) with i < k
+            for (idx_i, &i) in neighbors.iter().enumerate() {
+                for &k in &neighbors[(idx_i + 1)..] {
+                    let p_j = positions[j];
+                    let p_i = positions[i];
+                    let p_k = positions[k];
+
+                    let d_ji = [p_i[0] - p_j[0], p_i[1] - p_j[1], p_i[2] - p_j[2]];
+                    let d_jk = [p_k[0] - p_j[0], p_k[1] - p_j[1], p_k[2] - p_j[2]];
+
+                    let r_ji = (d_ji[0] * d_ji[0] + d_ji[1] * d_ji[1] + d_ji[2] * d_ji[2]).sqrt();
+                    let r_jk = (d_jk[0] * d_jk[0] + d_jk[1] * d_jk[1] + d_jk[2] * d_jk[2]).sqrt();
+
+                    if r_ji > 1e-6 && r_jk > 1e-6 {
+                        let dot = d_ji[0] * d_jk[0] + d_ji[1] * d_jk[1] + d_ji[2] * d_jk[2];
+                        let cos_theta = (dot / (r_ji * r_jk)).clamp(-1.0, 1.0);
+                        let theta0 = cos_theta.acos();
+
+                        // Default angle bending constant k_theta ~ 250.0 (kJ/mol)/rad^2
+                        angles.push(StateAngle {
+                            atom1: i,
+                            atom2: j,
+                            atom3: k,
+                            theta0,
+                            k_theta: 250.0,
+                        });
+                    }
+                }
+            }
+        }
+
         Self {
             time: 0.0,
             step: 0,
@@ -199,13 +266,37 @@ impl SimulationState {
             masses,
             charges,
             elements,
+            vdw_params,
             atom_names,
             residue_ids,
             residue_names,
             chain_ids,
             bonds,
+            angles,
             box_size,
         }
+    }
+
+    /// Collect 1-2 (bonded) and 1-3 (angle-connected) atom pairs to exclude from non-bonded calculations.
+    #[must_use]
+    pub fn get_exclusions(&self) -> std::collections::HashSet<(usize, usize)> {
+        let mut exclusions = std::collections::HashSet::new();
+
+        // 1-2 exclusions (direct bonds)
+        for bond in &self.bonds {
+            let min_idx = bond.atom1.min(bond.atom2);
+            let max_idx = bond.atom1.max(bond.atom2);
+            exclusions.insert((min_idx, max_idx));
+        }
+
+        // 1-3 exclusions (valence angles)
+        for angle in &self.angles {
+            let min_idx = angle.atom1.min(angle.atom3);
+            let max_idx = angle.atom1.max(angle.atom3);
+            exclusions.insert((min_idx, max_idx));
+        }
+
+        exclusions
     }
 
     /// Validate internal structural consistency (all parallel vectors have equal length).
@@ -250,6 +341,13 @@ impl SimulationState {
             return Err(StateError::InconsistentDimensions {
                 field: "elements",
                 actual: self.elements.len(),
+                expected: n,
+            });
+        }
+        if self.vdw_params.len() != n {
+            return Err(StateError::InconsistentDimensions {
+                field: "vdw_params",
+                actual: self.vdw_params.len(),
                 expected: n,
             });
         }
@@ -533,6 +631,29 @@ impl XorShift128Plus {
     }
 }
 
+/// Default Lennard-Jones parameters $[\sigma, \varepsilon]$ in $[\text{Å}, \text{kJ/mol}]$ for an element.
+#[must_use]
+pub fn default_vdw_for_element(elem: Element) -> [f64; 2] {
+    match elem.symbol {
+        "H" => [1.0, 0.08],
+        "C" => [3.4, 0.36],
+        "N" => [3.25, 0.71],
+        "O" => [3.12, 0.65],
+        "S" => [3.55, 1.05],
+        "P" => [3.74, 0.84],
+        "F" => [2.94, 0.25],
+        "Cl" => [3.50, 1.20],
+        "Br" => [3.70, 1.50],
+        "I" => [4.00, 2.00],
+        "Na" => [2.58, 0.08],
+        "K" => [3.33, 0.04],
+        "Ca" => [2.80, 0.50],
+        "Mg" => [2.13, 0.36],
+        "Fe" | "Zn" => [2.00, 0.50],
+        _ => [elem.vdw_radius * 2.0, 0.40],
+    }
+}
+
 // ─── Tests ──────────────────────────────────────────────────────────────────────
 
 #[cfg(test)]
@@ -638,5 +759,31 @@ END
         // With PBC on 10.0 A box: shortest distance is across boundary = 2.0 A
         let pbc_d = state.distance_with_pbc(0, 1).unwrap();
         assert!((pbc_d - 2.0).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_angles_auto_detection_and_exclusions() {
+        use bioforge_biology::{Atom, Bond, Molecule};
+
+        let o = Element::from_symbol("O").unwrap();
+        let h = Element::from_symbol("H").unwrap();
+        let mut mol = Molecule::new("water");
+        mol.atoms.push(Atom::new(1, o, [0.0, 0.0, 0.0], "O"));
+        mol.atoms.push(Atom::new(2, h, [0.757, 0.586, 0.0], "H1"));
+        mol.atoms.push(Atom::new(3, h, [-0.757, 0.586, 0.0], "H2"));
+        mol.bonds.push(Bond::single(1, 2));
+        mol.bonds.push(Bond::single(1, 3));
+
+        let state = SimulationState::from_molecule(&mol, None);
+        assert_eq!(state.bonds.len(), 2);
+        assert_eq!(state.angles.len(), 1); // 1 valence angle (H1-O-H2)
+        assert_eq!(state.angles[0].atom2, 0); // Vertex is Oxygen (index 0)
+
+        let exclusions = state.get_exclusions();
+        // 1-2 bonds: (0, 1) and (0, 2)
+        assert!(exclusions.contains(&(0, 1)));
+        assert!(exclusions.contains(&(0, 2)));
+        // 1-3 angle: (1, 2)
+        assert!(exclusions.contains(&(1, 2)));
     }
 }

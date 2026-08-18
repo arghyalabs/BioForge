@@ -1,8 +1,12 @@
 //! Force field definitions and potential energy evaluations.
 
+mod angle;
 mod harmonic;
+mod nonbonded;
 
+pub use angle::HarmonicAngleForce;
 pub use harmonic::HarmonicBondForce;
+pub use nonbonded::{NonBondedForce, COULOMB_CONSTANT};
 
 use bioforge_state::SimulationState;
 use std::fmt::Debug;
@@ -39,6 +43,21 @@ impl CompositeForceField {
     /// Add a force field component.
     pub fn add<F: ForceField + 'static>(&mut self, force: F) {
         self.components.push(Box::new(force));
+    }
+
+    /// Construct a standard full Molecular Mechanics force field:
+    /// Harmonic Bonds + Harmonic Angles + Lennard-Jones (12-6) + Coulomb Electrostatics.
+    #[must_use]
+    pub fn standard_molecular_mechanics(dielectric_constant: f64, cutoff_angstrom: f64) -> Self {
+        let mut ff = Self::new();
+        ff.add(HarmonicBondForce::new());
+        ff.add(HarmonicAngleForce::new());
+        ff.add(
+            NonBondedForce::new()
+                .with_dielectric(dielectric_constant)
+                .with_cutoff(cutoff_angstrom),
+        );
+        ff
     }
 }
 

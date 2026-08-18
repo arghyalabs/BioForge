@@ -24,7 +24,7 @@ mod trajectory;
 
 pub use error::StateError;
 pub use state::{
-    SimulationState, StateBond, DA_A2_PER_PS2_TO_KJ_PER_MOL, MOLAR_GAS_CONSTANT_R,
-    THERMAL_VELOCITY_CONSTANT,
+    default_vdw_for_element, SimulationState, StateAngle, StateBond,
+    DA_A2_PER_PS2_TO_KJ_PER_MOL, MOLAR_GAS_CONSTANT_R, THERMAL_VELOCITY_CONSTANT,
 };
 pub use trajectory::{Trajectory, TrajectoryFrame};

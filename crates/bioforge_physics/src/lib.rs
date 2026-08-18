@@ -23,7 +23,10 @@ pub mod integrator;
 pub mod thermostat;
 
 pub use error::PhysicsError;
-pub use force::{CompositeForceField, ForceField, HarmonicBondForce};
+pub use force::{
+    CompositeForceField, ForceField, HarmonicAngleForce, HarmonicBondForce, NonBondedForce,
+    COULOMB_CONSTANT,
+};
 pub use integrator::{Integrator, VelocityVerlet, FORCE_TO_ACCELERATION_FACTOR};
 pub use thermostat::{BerendsenThermostat, Thermostat};
 
@@ -201,5 +204,49 @@ mod tests {
             assert!(p[1].abs() < 1e-9, "py non-zero: {}", p[1]);
             assert!(p[2].abs() < 1e-9, "pz non-zero: {}", p[2]);
         }
+    }
+
+    /// Full Molecular Mechanics Integration Benchmark (Bonds + Angles + LJ + Coulomb)
+    #[test]
+    fn test_full_molecular_mechanics_trajectory() {
+        use bioforge_biology::{Atom, Bond, Molecule};
+
+        // Create a realistic water molecule with partial charges
+        let o = Element::from_symbol("O").unwrap();
+        let h = Element::from_symbol("H").unwrap();
+        let mut mol = Molecule::new("water");
+        // SPC/E water parameters: q(O) = -0.8476, q(H) = +0.4238
+        let mut atom_o = Atom::new(1, o, [0.0, 0.0, 0.0], "O");
+        atom_o.charge = -0.8476;
+        let mut atom_h1 = Atom::new(2, h, [1.0, 0.0, 0.0], "H1");
+        atom_h1.charge = 0.4238;
+        let mut atom_h2 = Atom::new(3, h, [-0.333, 0.943, 0.0], "H2");
+        atom_h2.charge = 0.4238;
+
+        mol.atoms.push(atom_o);
+        mol.atoms.push(atom_h1);
+        mol.atoms.push(atom_h2);
+        mol.bonds.push(Bond::single(1, 2));
+        mol.bonds.push(Bond::single(1, 3));
+
+        let mut state = SimulationState::from_molecule(&mol, Some([20.0, 20.0, 20.0]));
+        state.thermalize(300.0, 42).unwrap();
+
+        let force_field = CompositeForceField::standard_molecular_mechanics(1.0, 10.0);
+        let mut integrator = VelocityVerlet::new();
+
+        // Integrate 1,000 steps of full molecular mechanics (dt = 0.5 fs)
+        let dt = 0.0005;
+        for _ in 0..1000 {
+            let u = integrator.step(&mut state, dt, &force_field).unwrap();
+            assert!(u.is_finite());
+            let k = state.kinetic_energy();
+            assert!(k.is_finite());
+            assert!(state.instantaneous_temperature() > 0.0);
+        }
+
+        // Verify simulation advanced time to 0.5 ps
+        assert!((state.time - 0.500).abs() < 1e-6);
+        assert_eq!(state.step, 1000);
     }
 }
