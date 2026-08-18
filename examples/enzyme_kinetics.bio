@@ -1,0 +1,25 @@
+// BioForge - Enzyme Kinetics & Inhibition
+// Simulates substrate conversion and Michaelis-Menten catalysis
+
+experiment EnzymeCatalysis {
+    protein kinase = load_structure("examples/tiny.pdb")
+
+    environment {
+        temperature = 310.15 K
+        pH = 7.4
+    }
+
+    simulate {
+        timestep = 1.0 fs
+        duration = 2.0 ps
+    }
+
+    measure {
+        total_energy
+        temperature
+    }
+
+    visualize {
+        kinase
+    }
+}

@@ -1,0 +1,26 @@
+// BioForge - Gene Expression & Protein Synthesis
+// Simulates Central Dogma transcription and translation dynamics
+
+experiment GfpSynthesis {
+    protein gfp = load_structure("examples/tiny.pdb")
+
+    environment {
+        temperature = 310 K
+        pH = 7.2
+    }
+
+    simulate {
+        timestep = 0.5 fs
+        duration = 1.5 ps
+    }
+
+    measure {
+        distance(gfp, gfp)
+        total_energy
+        temperature
+    }
+
+    visualize {
+        gfp
+    }
+}
