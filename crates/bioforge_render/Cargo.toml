@@ -1,0 +1,18 @@
+[package]
+name = "bioforge_render"
+version.workspace = true
+edition.workspace = true
+description = "3D GPU visual observer and molecular representation engine for BioForge"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+bioforge_biology.workspace = true
+bioforge_state.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
