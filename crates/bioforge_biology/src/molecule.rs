@@ -125,6 +125,38 @@ impl Molecule {
         ids
     }
 
+    /// Infer covalent bonds based on interatomic distances and covalent radii:
+    /// $$d \le r_{\text{cov1}} + r_{\text{cov2}} + 0.45\text{ \AA} \quad (d \ge 0.4\text{ \AA})$$
+    pub fn infer_bonds(&mut self) {
+        let n = self.atoms.len();
+        for i in 0..n {
+            let p1 = self.atoms[i].position;
+            let r1 = self.atoms[i].element.covalent_radius;
+            let id1 = self.atoms[i].id;
+
+            for j in (i + 1)..n {
+                let p2 = self.atoms[j].position;
+                let r2 = self.atoms[j].element.covalent_radius;
+                let id2 = self.atoms[j].id;
+
+                let dx = p1[0] - p2[0];
+                let dy = p1[1] - p2[1];
+                let dz = p1[2] - p2[2];
+                let dist_sq = dx * dx + dy * dy + dz * dz;
+
+                let max_bond_dist = r1 + r2 + 0.45;
+                if dist_sq >= 0.16 && dist_sq <= max_bond_dist * max_bond_dist {
+                    let exists = self.bonds.iter().any(|b| {
+                        (b.atom1 == id1 && b.atom2 == id2) || (b.atom1 == id2 && b.atom2 == id1)
+                    });
+                    if !exists {
+                        self.bonds.push(Bond::single(id1, id2));
+                    }
+                }
+            }
+        }
+    }
+
     /// Get all unique residue names in this molecule.
     #[must_use]
     pub fn residue_names(&self) -> Vec<String> {

@@ -10,10 +10,16 @@ path = "src/main.rs"
 
 [dependencies]
 bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
 bioforge_ast.workspace = true
 bioforge_lexer.workspace = true
 bioforge_parser.workspace = true
 bioforge_hir.workspace = true
+bioforge_biology.workspace = true
+bioforge_state.workspace = true
+bioforge_physics.workspace = true
+bioforge_measurement.workspace = true
+bioforge_render.workspace = true
 clap.workspace = true
 
 [lints]

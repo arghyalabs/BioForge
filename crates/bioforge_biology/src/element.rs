@@ -19,34 +19,37 @@ pub struct Element {
     pub mass: f64,
     /// Van der Waals radius in Ångströms (Å).
     pub vdw_radius: f64,
+    /// Single-bond covalent radius in Ångströms (Å) (Pyykkö 2009).
+    pub covalent_radius: f64,
 }
 
 /// Built-in table of biologically relevant elements.
 ///
 /// Masses are IUPAC 2021 standard atomic weights.
 /// Van der Waals radii are from Bondi (1964) / CRC Handbook.
+/// Covalent radii are from Pyykkö & Atsumi (2009).
 const ELEMENTS: &[Element] = &[
-    Element { symbol: "H",  name: "Hydrogen",   atomic_number: 1,  mass: 1.008,    vdw_radius: 1.20 },
-    Element { symbol: "He", name: "Helium",     atomic_number: 2,  mass: 4.003,    vdw_radius: 1.40 },
-    Element { symbol: "C",  name: "Carbon",     atomic_number: 6,  mass: 12.011,   vdw_radius: 1.70 },
-    Element { symbol: "N",  name: "Nitrogen",   atomic_number: 7,  mass: 14.007,   vdw_radius: 1.55 },
-    Element { symbol: "O",  name: "Oxygen",     atomic_number: 8,  mass: 15.999,   vdw_radius: 1.52 },
-    Element { symbol: "F",  name: "Fluorine",   atomic_number: 9,  mass: 18.998,   vdw_radius: 1.47 },
-    Element { symbol: "Na", name: "Sodium",     atomic_number: 11, mass: 22.990,   vdw_radius: 2.27 },
-    Element { symbol: "Mg", name: "Magnesium",  atomic_number: 12, mass: 24.305,   vdw_radius: 1.73 },
-    Element { symbol: "P",  name: "Phosphorus", atomic_number: 15, mass: 30.974,   vdw_radius: 1.80 },
-    Element { symbol: "S",  name: "Sulfur",     atomic_number: 16, mass: 32.060,   vdw_radius: 1.80 },
-    Element { symbol: "Cl", name: "Chlorine",   atomic_number: 17, mass: 35.450,   vdw_radius: 1.75 },
-    Element { symbol: "K",  name: "Potassium",  atomic_number: 19, mass: 39.098,   vdw_radius: 2.75 },
-    Element { symbol: "Ca", name: "Calcium",    atomic_number: 20, mass: 40.078,   vdw_radius: 2.31 },
-    Element { symbol: "Mn", name: "Manganese",  atomic_number: 25, mass: 54.938,   vdw_radius: 2.05 },
-    Element { symbol: "Fe", name: "Iron",       atomic_number: 26, mass: 55.845,   vdw_radius: 2.05 },
-    Element { symbol: "Co", name: "Cobalt",     atomic_number: 27, mass: 58.933,   vdw_radius: 2.00 },
-    Element { symbol: "Cu", name: "Copper",     atomic_number: 29, mass: 63.546,   vdw_radius: 1.40 },
-    Element { symbol: "Zn", name: "Zinc",       atomic_number: 30, mass: 65.380,   vdw_radius: 1.39 },
-    Element { symbol: "Se", name: "Selenium",   atomic_number: 34, mass: 78.971,   vdw_radius: 1.90 },
-    Element { symbol: "Br", name: "Bromine",    atomic_number: 35, mass: 79.904,   vdw_radius: 1.85 },
-    Element { symbol: "I",  name: "Iodine",     atomic_number: 53, mass: 126.904,  vdw_radius: 1.98 },
+    Element { symbol: "H",  name: "Hydrogen",   atomic_number: 1,  mass: 1.008,    vdw_radius: 1.20, covalent_radius: 0.31 },
+    Element { symbol: "He", name: "Helium",     atomic_number: 2,  mass: 4.003,    vdw_radius: 1.40, covalent_radius: 0.28 },
+    Element { symbol: "C",  name: "Carbon",     atomic_number: 6,  mass: 12.011,   vdw_radius: 1.70, covalent_radius: 0.76 },
+    Element { symbol: "N",  name: "Nitrogen",   atomic_number: 7,  mass: 14.007,   vdw_radius: 1.55, covalent_radius: 0.71 },
+    Element { symbol: "O",  name: "Oxygen",     atomic_number: 8,  mass: 15.999,   vdw_radius: 1.52, covalent_radius: 0.66 },
+    Element { symbol: "F",  name: "Fluorine",   atomic_number: 9,  mass: 18.998,   vdw_radius: 1.47, covalent_radius: 0.57 },
+    Element { symbol: "Na", name: "Sodium",     atomic_number: 11, mass: 22.990,   vdw_radius: 2.27, covalent_radius: 1.66 },
+    Element { symbol: "Mg", name: "Magnesium",  atomic_number: 12, mass: 24.305,   vdw_radius: 1.73, covalent_radius: 1.41 },
+    Element { symbol: "P",  name: "Phosphorus", atomic_number: 15, mass: 30.974,   vdw_radius: 1.80, covalent_radius: 1.07 },
+    Element { symbol: "S",  name: "Sulfur",     atomic_number: 16, mass: 32.060,   vdw_radius: 1.80, covalent_radius: 1.05 },
+    Element { symbol: "Cl", name: "Chlorine",   atomic_number: 17, mass: 35.450,   vdw_radius: 1.75, covalent_radius: 1.02 },
+    Element { symbol: "K",  name: "Potassium",  atomic_number: 19, mass: 39.098,   vdw_radius: 2.75, covalent_radius: 2.03 },
+    Element { symbol: "Ca", name: "Calcium",    atomic_number: 20, mass: 40.078,   vdw_radius: 2.31, covalent_radius: 1.76 },
+    Element { symbol: "Mn", name: "Manganese",  atomic_number: 25, mass: 54.938,   vdw_radius: 2.05, covalent_radius: 1.39 },
+    Element { symbol: "Fe", name: "Iron",       atomic_number: 26, mass: 55.845,   vdw_radius: 2.05, covalent_radius: 1.32 },
+    Element { symbol: "Co", name: "Cobalt",     atomic_number: 27, mass: 58.933,   vdw_radius: 2.00, covalent_radius: 1.26 },
+    Element { symbol: "Cu", name: "Copper",     atomic_number: 29, mass: 63.546,   vdw_radius: 1.40, covalent_radius: 1.32 },
+    Element { symbol: "Zn", name: "Zinc",       atomic_number: 30, mass: 65.380,   vdw_radius: 1.39, covalent_radius: 1.22 },
+    Element { symbol: "Se", name: "Selenium",   atomic_number: 34, mass: 78.971,   vdw_radius: 1.90, covalent_radius: 1.20 },
+    Element { symbol: "Br", name: "Bromine",    atomic_number: 35, mass: 79.904,   vdw_radius: 1.85, covalent_radius: 1.20 },
+    Element { symbol: "I",  name: "Iodine",     atomic_number: 53, mass: 126.904,  vdw_radius: 1.98, covalent_radius: 1.39 },
 ];
 
 impl Element {

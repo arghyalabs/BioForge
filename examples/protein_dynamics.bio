@@ -1,0 +1,31 @@
+// BioForge - Protein Dynamics Simulation
+// End-to-end vertical slice: Simulates Alanine peptide dynamics at physiological temperature
+
+experiment AlanineDynamics {
+    // Load real 5-atom alanine residue from PDB
+    protein alanine = load_structure("examples/tiny.pdb")
+
+    // Define physiological thermodynamic environment
+    environment {
+        temperature = 310 K
+        pH = 7.4
+    }
+
+    // Configure numerical simulation parameters
+    simulate {
+        timestep = 0.5 fs
+        duration = 1.0 ps
+    }
+
+    // Define observables to record over time
+    measure {
+        distance(alanine, alanine)
+        total_energy
+        temperature
+    }
+
+    // Configure 3D visualization
+    visualize {
+        alanine
+    }
+}

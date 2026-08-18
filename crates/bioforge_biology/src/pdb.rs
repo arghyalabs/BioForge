@@ -72,6 +72,10 @@ pub fn parse_pdb(content: &str, name: &str) -> Result<Molecule, BiologyError> {
         mol.atoms.push(atom);
     }
 
+    if mol.bonds.is_empty() {
+        mol.infer_bonds();
+    }
+
     Ok(mol)
 }
 
