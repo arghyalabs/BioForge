@@ -1,0 +1,23 @@
+[package]
+name = "bioforge_multiscale"
+version.workspace = true
+edition.workspace = true
+description = "Multiscale scale bridges and time-stepping coordination engine for BioForge"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+bioforge_physics.workspace = true
+bioforge_reaction.workspace = true
+bioforge_electrophysiology.workspace = true
+bioforge_cell.workspace = true
+bioforge_tissue.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
