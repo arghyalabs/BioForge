@@ -1,0 +1,17 @@
+[package]
+name = "bioforge_state"
+version.workspace = true
+edition.workspace = true
+description = "Simulation state and runtime representation for the BioForge simulation engine"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+bioforge_biology.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
