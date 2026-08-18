@@ -16,6 +16,7 @@ members = [
     "crates/bioforge_cell",
     "crates/bioforge_tissue",
     "crates/bioforge_multiscale",
+    "crates/bioforge_hypothesis",
     "crates/bioforge_cli",
 ]
 default-members = ["crates/bioforge_cli"]
@@ -47,6 +48,7 @@ bioforge_electrophysiology = { path = "crates/bioforge_electrophysiology" }
 bioforge_cell = { path = "crates/bioforge_cell" }
 bioforge_tissue = { path = "crates/bioforge_tissue" }
 bioforge_multiscale = { path = "crates/bioforge_multiscale" }
+bioforge_hypothesis = { path = "crates/bioforge_hypothesis" }
 
 # Lexing
 logos = "0.14"
@@ -56,6 +58,9 @@ ariadne = "0.4"
 
 # CLI
 clap = { version = "4", features = ["derive"] }
+
+# Cryptography & Hashing
+sha2 = "0.10"
 
 # Serialization
 serde = { version = "1", features = ["derive"] }
