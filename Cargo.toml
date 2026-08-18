@@ -12,6 +12,7 @@ members = [
     "crates/bioforge_measurement",
     "crates/bioforge_render",
     "crates/bioforge_reaction",
+    "crates/bioforge_electrophysiology",
     "crates/bioforge_cli",
 ]
 default-members = ["crates/bioforge_cli"]
@@ -39,6 +40,7 @@ bioforge_physics = { path = "crates/bioforge_physics" }
 bioforge_measurement = { path = "crates/bioforge_measurement" }
 bioforge_render = { path = "crates/bioforge_render" }
 bioforge_reaction = { path = "crates/bioforge_reaction" }
+bioforge_electrophysiology = { path = "crates/bioforge_electrophysiology" }
 
 # Lexing
 logos = "0.14"

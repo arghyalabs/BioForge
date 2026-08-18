@@ -1,0 +1,18 @@
+[package]
+name = "bioforge_electrophysiology"
+version.workspace = true
+edition.workspace = true
+description = "Membrane biology, ion channels, and Hodgkin-Huxley electrophysiology engine for BioForge"
+
+[dependencies]
+bioforge_diagnostics.workspace = true
+bioforge_types.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
+[lints]
+workspace = true
